@@ -59,8 +59,9 @@ public class SinglyLinkedList {
         int val = sc.nextInt();
         System.out.print("Enter position: ");
         int pos = sc.nextInt();
-
+        
         list.insertAtPosition(val, pos);
         list.display();
+        sc.close();
     }
 }
