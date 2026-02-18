@@ -1,58 +1,77 @@
-import java.util.Stack;
 
 /**
- * ================================================================
- * MAIN CLASS - UseCase5PalindromeCheckerApp
- * ================================================================
+ * MINI CLASS - UseCase6PalindromeCheckerApp
  *
- * Use Case 5: Stack-Based Validation
+ * Use Case 6: Queue + Stack Fairness Check
  *
  * Description:
- * This class validates a palindrome by pushing characters
- * into a stack and then popping them to compare with the
- * original string. The stack naturally reverses the order
- * of elements, making it suitable for palindrome validation.
+ * This class demonstrates palindrome validation using
+ * two different data structures:
  *
- * Key Concepts:
- * - Stack (LIFO principle)
- * - Push operation (insert characters)
- * - Pop operation (remove characters in reverse order)
- * - Reversal logic
+ * 1) Queue (FIFO - First In First Out)
+ * 2) Stack (LIFO - Last In First Out)
  *
- * @author Developer
- * @version 5.0
+ * Characters are inserted into both structures and then
+ * compared by removing from the front of the queue and
+ * the top of the stack.
+ *
+ * If all characters match, the input string is confirmed
+ * as a palindrome.
+ *
+ * This use case helps understand how FIFO and LIFO
+ * behaviors can be combined for symmetric comparison.
+ *
+ * Author: Developer
+ * Version: 1.0
  */
+
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
+import java.util.Scanner;
+
 public class PalindromeCheckerApp {
 
     /**
-     * Application entry point for UC5.
-     *
-     * @param args Command-Line arguments
+     * Application entry point for the use case
+     * 
+     * @param args Command line arguments
      */
     public static void main(String[] args) {
-        // Declare and initialize the input string.
-        String input = "noon";
 
-        // Create a Stack to store characters.
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Input : ");
+        String input = scanner.nextLine();
+
+        // Define the input string to validate
+        String inputStr = input.replaceAll("\\s+", "").toLowerCase();
+
+        // Create a Queue to store characters in FIFO order
+        Queue<Character> queue = new LinkedList<>();
+
+        // Create a Stack to store characters in LIFO order
         Stack<Character> stack = new Stack<>();
 
-        // Push each character of the string into the stack.
-        for (char c : input.toCharArray()) {
+        // Insert each character into both queue and stack
+        for (char c : inputStr.toCharArray()) {
+            queue.add(c);
             stack.push(c);
         }
 
-        // Assume palindrome initially.
+        // Flag to track palindrome status
         boolean isPalindrome = true;
 
-        for (char c : input.toCharArray()) {
-            if (c != stack.pop()) {
+        // Compare characters until the queue becomes empty
+        while (!queue.isEmpty()) {
+            if (!queue.remove().equals(stack.pop())) {
                 isPalindrome = false;
                 break;
             }
         }
 
-        // Print result.
-        System.out.println("Input : " + input);
-        System.out.println("Is Palindrome? : " + isPalindrome);
+        System.out.println("Is palindrome : " + isPalindrome);
+
+        scanner.close();
     }
 }
