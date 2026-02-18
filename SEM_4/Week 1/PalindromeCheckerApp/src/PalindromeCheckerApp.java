@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 /**
  * ===============================================================
- * MAIN CLASS - PalindromeCheckerApp
+ * MAIN CLASS - UseCase3PalindromeCheckerApp
  * ===============================================================
  *
  * Use Case 1: Application Entry & Welcome Message
@@ -35,22 +35,26 @@ public class PalindromeCheckerApp {
      * @param args Command-line arguments
      */
     public static void main(String[] args) {
-
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Input text: ");
+
+        System.out.print("Enter a string to check if it's a palindrome: ");
         String input = scanner.nextLine();
 
-        boolean isPalindrome = true;
-
-        // Loop only till half of the string length
-        for (int i = 0; i < input.length() / 2; i++) {
-            if (input.charAt(i) != input.charAt(input.length() - 1 - i)) {
-                isPalindrome = false;
-                break;
-            }
+        String reversed = "";
+        for (int i = input.length() - 1; i >= 0; i--) {
+            reversed += input.charAt(i);
         }
 
-        System.out.println("Is it a Palindrome? : " + isPalindrome);
+        boolean isPalindrome = input.equals(reversed);
+
+        if (isPalindrome) {
+            System.out.println("\"" + input + "\" is a palindrome.");
+        } else {
+            System.out.println("\"" + input + "\" is not a palindrome.");
+            System.out.println("Original: " + input);
+            System.out.println("Reversed: " + reversed);
+        }
+
         scanner.close();
     }
 }
