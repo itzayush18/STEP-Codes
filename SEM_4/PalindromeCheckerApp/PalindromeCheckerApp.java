@@ -1,81 +1,123 @@
-/*
- * NAME: UseCase10PalindromeCheckerApp
+import java.util.*;
+
+/**
+ * ==========================================================
+ * MAIN CLASS - UseCase13PalindromeCheckerApp
+ * ==========================================================
  *
- * Use Case 10: Case-Insensitive & Space-Ignored Palindrome
+ * Use Case 13: Performance Comparison
  *
  * Description:
- * This class validates palindromes while ignoring spaces, case, 
- * and non-alphanumeric characters using comprehensive preprocessing.
+ * This program compares the execution performance of
+ * different palindrome checking algorithms.
  *
- * Processing Flow:
- * 1. Convert to lowercase: "A man a plan" → "a man a plan"
- * 2. Remove non-alphanumeric: "a man a plan" → "amanaplan"
- * 3. Apply two-pointer comparison on cleaned string
+ * Algorithms Compared:
+ * 1. Two Pointer Method
+ * 2. Stack Method
+ * 3. Deque Method
  *
  * Key Concepts:
- * - String normalization (toLowerCase())
- * - Regular expressions (regex): [^a-zA-Z0-9]
- * - Character filtering with StringBuilder
- * - Two-pointer technique on processed string
- *
- * Real-world example: "A man, a plan, a canal: Panama" ✓
- *
- * Author: Developer
- * Version: 1.0
+ * - System.nanoTime()
+ * - Algorithm comparison
  */
-
-import java.util.Scanner;
 
 public class PalindromeCheckerApp {
 
-    /**
-     * Application entry point for UC10.
-     * Real-world palindrome with preprocessing
-     */
     public static void main(String[] args) {
+
         Scanner scanner = new Scanner(System.in);
-        
-        System.out.print("Enter a string to check palindrome (ignores spaces/case): ");
+
+        System.out.println("===== Palindrome Performance Comparison =====");
+        System.out.print("Enter a string: ");
         String input = scanner.nextLine();
-        
-        String cleaned = preprocessString(input);
-        System.out.println("Cleaned: \"" + cleaned + "\"");
-        
-        if (isPalindrome(cleaned)) {
-            System.out.println(input + " is a palindrome!");
-        } else {
-            System.out.println(input + " is NOT a palindrome.");
-        }
-        
+
+        PalindromeAlgorithms algo = new PalindromeAlgorithms();
+
+        // Two Pointer Method
+        long start1 = System.nanoTime();
+        boolean result1 = algo.twoPointerCheck(input);
+        long end1 = System.nanoTime();
+
+        // Stack Method
+        long start2 = System.nanoTime();
+        boolean result2 = algo.stackCheck(input);
+        long end2 = System.nanoTime();
+
+        // Deque Method
+        long start3 = System.nanoTime();
+        boolean result3 = algo.dequeCheck(input);
+        long end3 = System.nanoTime();
+
+        System.out.println("\n===== Results =====");
+
+        System.out.println("Two Pointer Method: " + result1 +
+                " | Time: " + (end1 - start1) + " ns");
+
+        System.out.println("Stack Method: " + result2 +
+                " | Time: " + (end2 - start2) + " ns");
+
+        System.out.println("Deque Method: " + result3 +
+                " | Time: " + (end3 - start3) + " ns");
+
         scanner.close();
     }
-    
-    /**
-     * Comprehensive string preprocessing for palindrome checking
-     */
-    private static String preprocessString(String str) {
-        // Step 1: Convert to lowercase
-        String lower = str.toLowerCase();
-        
-        // Step 2: Remove non-alphanumeric characters using regex
-        // [^a-zA-Z0-9] matches anything that's NOT alphanumeric
-        return lower.replaceAll("[^a-zA-Z0-9]", "");
-    }
-    
-    /**
-     * Two-pointer palindrome check on preprocessed string
-     */
-    private static boolean isPalindrome(String str) {
-        int left = 0;
-        int right = str.length() - 1;
-        
-        while (left < right) {
-            if (str.charAt(left) != str.charAt(right)) {
+}
+
+/**
+ * Class containing different palindrome algorithms
+ */
+class PalindromeAlgorithms {
+
+    // Method 1: Two Pointer Technique
+    public boolean twoPointerCheck(String input) {
+
+        int start = 0;
+        int end = input.length() - 1;
+
+        while (start < end) {
+            if (input.charAt(start) != input.charAt(end)) {
                 return false;
             }
-            left++;
-            right--;
+            start++;
+            end--;
         }
+
+        return true;
+    }
+
+    // Method 2: Stack Based
+    public boolean stackCheck(String input) {
+
+        Stack<Character> stack = new Stack<>();
+
+        for (char c : input.toCharArray()) {
+            stack.push(c);
+        }
+
+        for (char c : input.toCharArray()) {
+            if (c != stack.pop()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // Method 3: Deque Based
+    public boolean dequeCheck(String input) {
+
+        Deque<Character> deque = new ArrayDeque<>();
+
+        for (char c : input.toCharArray()) {
+            deque.addLast(c);
+        }
+
+        while (deque.size() > 1) {
+            if (deque.removeFirst() != deque.removeLast()) {
+                return false;
+            }
+        }
+
         return true;
     }
 }
