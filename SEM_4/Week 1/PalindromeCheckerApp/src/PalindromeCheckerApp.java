@@ -1,81 +1,86 @@
-/*
- * NAME: UseCase10PalindromeCheckerApp
+import java.util.Scanner;
+
+/**
+ * ==========================================================
+ * MAIN CLASS - UseCase11PalindromeCheckerApp
+ * ==========================================================
  *
- * Use Case 10: Case-Insensitive & Space-Ignored Palindrome
+ * Use Case 11: Object-Oriented Palindrome Service
  *
  * Description:
- * This class validates palindromes while ignoring spaces, case, 
- * and non-alphanumeric characters using comprehensive preprocessing.
+ * This class demonstrates palindrome validation using
+ * object-oriented design.
  *
- * Processing Flow:
- * 1. Convert to lowercase: "A man a plan" → "a man a plan"
- * 2. Remove non-alphanumeric: "a man a plan" → "amanaplan"
- * 3. Apply two-pointer comparison on cleaned string
+ * The palindrome logic is encapsulated inside a
+ * PalindromeService class.
  *
- * Key Concepts:
- * - String normalization (toLowerCase())
- * - Regular expressions (regex): [^a-zA-Z0-9]
- * - Character filtering with StringBuilder
- * - Two-pointer technique on processed string
+ * This improves:
+ * - Reusability
+ * - Readability
+ * - Separation of concerns
  *
- * Real-world example: "A man, a plan, a canal: Panama" ✓
- *
- * Author: Developer
- * Version: 1.0
+ * Version: 11.0
  */
-
-import java.util.Scanner;
 
 public class PalindromeCheckerApp {
 
     /**
-     * Application entry point for UC10.
-     * Real-world palindrome with preprocessing
+     * Application entry point for UC11.
+     * @param args Command-line arguments
      */
     public static void main(String[] args) {
+
         Scanner scanner = new Scanner(System.in);
-        
-        System.out.print("Enter a string to check palindrome (ignores spaces/case): ");
+
+        System.out.println("===== Palindrome Checker App =====");
+        System.out.print("Enter a string: ");
+
         String input = scanner.nextLine();
-        
-        String cleaned = preprocessString(input);
-        System.out.println("Cleaned: \"" + cleaned + "\"");
-        
-        if (isPalindrome(cleaned)) {
-            System.out.println(input + " is a palindrome!");
+
+        // Create service object
+        PalindromeService service = new PalindromeService();
+
+        // Call palindrome check method
+        boolean result = service.checkPalindrome(input);
+
+        if (result) {
+            System.out.println("Result: The string is a PALINDROME.");
         } else {
-            System.out.println(input + " is NOT a palindrome.");
+            System.out.println("Result: The string is NOT a palindrome.");
         }
-        
+
         scanner.close();
     }
-    
+}
+
+/**
+ * Service class that contains palindrome logic.
+ */
+class PalindromeService {
+
     /**
-     * Comprehensive string preprocessing for palindrome checking
+     * Checks whether the input string is a palindrome.
+     *
+     * @param input Input string
+     * @return true if palindrome, false otherwise
      */
-    private static String preprocessString(String str) {
-        // Step 1: Convert to lowercase
-        String lower = str.toLowerCase();
-        
-        // Step 2: Remove non-alphanumeric characters using regex
-        // [^a-zA-Z0-9] matches anything that's NOT alphanumeric
-        return lower.replaceAll("[^a-zA-Z0-9]", "");
-    }
-    
-    /**
-     * Two-pointer palindrome check on preprocessed string
-     */
-    private static boolean isPalindrome(String str) {
-        int left = 0;
-        int right = str.length() - 1;
-        
-        while (left < right) {
-            if (str.charAt(left) != str.charAt(right)) {
+    public boolean checkPalindrome(String input) {
+
+        // Initialize pointers
+        int start = 0;
+        int end = input.length() - 1;
+
+        // Compare characters moving inward
+        while (start < end) {
+
+            if (input.charAt(start) != input.charAt(end)) {
                 return false;
             }
-            left++;
-            right--;
+
+            start++;
+            end--;
         }
+
         return true;
     }
 }
