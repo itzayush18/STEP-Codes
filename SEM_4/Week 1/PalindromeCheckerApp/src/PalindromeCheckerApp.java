@@ -1,46 +1,55 @@
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * ==========================================================
- * MAIN CLASS - UseCase11PalindromeCheckerApp
+ * MAIN CLASS - UseCase12PalindromeCheckerApp
  * ==========================================================
  *
- * Use Case 11: Object-Oriented Palindrome Service
+ * Use Case 12: Strategy Pattern for Palindrome Algorithms
  *
  * Description:
- * This class demonstrates palindrome validation using
- * object-oriented design.
+ * This program demonstrates how different palindrome
+ * algorithms can be selected dynamically using the
+ * Strategy Design Pattern.
  *
- * The palindrome logic is encapsulated inside a
- * PalindromeService class.
+ * Strategies Implemented:
+ * 1. StackStrategy
+ * 2. DequeStrategy
  *
- * This improves:
- * - Reusability
- * - Readability
- * - Separation of concerns
- *
- * Version: 11.0
+ * Concepts Used:
+ * - Interface
+ * - Polymorphism
+ * - Strategy Pattern
  */
 
 public class PalindromeCheckerApp {
 
-    /**
-     * Application entry point for UC11.
-     * @param args Command-line arguments
-     */
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("===== Palindrome Checker App =====");
+        System.out.println("===== Palindrome Checker (Strategy Pattern) =====");
         System.out.print("Enter a string: ");
-
         String input = scanner.nextLine();
 
-        // Create service object
-        PalindromeService service = new PalindromeService();
+        System.out.println("\nChoose Algorithm:");
+        System.out.println("1. Stack Strategy");
+        System.out.println("2. Deque Strategy");
+        System.out.print("Enter choice: ");
 
-        // Call palindrome check method
+        int choice = scanner.nextInt();
+
+        PalindromeStrategy strategy;
+
+        // Inject strategy dynamically
+        if (choice == 1) {
+            strategy = new StackStrategy();
+        } else {
+            strategy = new DequeStrategy();
+        }
+
+        PalindromeService service = new PalindromeService(strategy);
+
         boolean result = service.checkPalindrome(input);
 
         if (result) {
@@ -54,31 +63,69 @@ public class PalindromeCheckerApp {
 }
 
 /**
- * Service class that contains palindrome logic.
+ * Strategy Interface
+ */
+interface PalindromeStrategy {
+    boolean checkPalindrome(String input);
+}
+
+/**
+ * Context class
  */
 class PalindromeService {
 
-    /**
-     * Checks whether the input string is a palindrome.
-     *
-     * @param input Input string
-     * @return true if palindrome, false otherwise
-     */
+    private PalindromeStrategy strategy;
+
+    public PalindromeService(PalindromeStrategy strategy) {
+        this.strategy = strategy;
+    }
+
+    public boolean checkPalindrome(String input) {
+        return strategy.checkPalindrome(input);
+    }
+}
+
+/**
+ * Stack-based palindrome strategy
+ */
+class StackStrategy implements PalindromeStrategy {
+
     public boolean checkPalindrome(String input) {
 
-        // Initialize pointers
-        int start = 0;
-        int end = input.length() - 1;
+        Stack<Character> stack = new Stack<>();
 
-        // Compare characters moving inward
-        while (start < end) {
+        for (char c : input.toCharArray()) {
+            stack.push(c);
+        }
 
-            if (input.charAt(start) != input.charAt(end)) {
+        for (char c : input.toCharArray()) {
+            if (c != stack.pop()) {
                 return false;
             }
+        }
 
-            start++;
-            end--;
+        return true;
+    }
+}
+
+/**
+ * Deque-based palindrome strategy
+ */
+class DequeStrategy implements PalindromeStrategy {
+
+    public boolean checkPalindrome(String input) {
+
+        Deque<Character> deque = new ArrayDeque<>();
+
+        for (char c : input.toCharArray()) {
+            deque.addLast(c);
+        }
+
+        while (deque.size() > 1) {
+
+            if (deque.removeFirst() != deque.removeLast()) {
+                return false;
+            }
         }
 
         return true;
