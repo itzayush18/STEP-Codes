@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class TrainConsistManagementSystem {
 
@@ -19,7 +21,7 @@ public class TrainConsistManagementSystem {
 
     public static void main(String[] args) {
         System.out.println("==================================");
-        System.out.println(" UC10 - Count Total Seats in Train ");
+        System.out.println(" UC9 - Group Bogies by Type ");
         System.out.println("==================================");
 
         List<Bogie> bogies = new ArrayList<>();
@@ -27,14 +29,19 @@ public class TrainConsistManagementSystem {
         bogies.add(new Bogie("AC Chair", 56));
         bogies.add(new Bogie("First Class", 24));
         bogies.add(new Bogie("Sleeper", 70));
+        bogies.add(new Bogie("AC Chair", 60));
 
-        System.out.println("Bogies in Train:");
+        System.out.println("All Bogies:");
         bogies.forEach(System.out::println);
 
-        int totalSeats = bogies.stream()
-                .map(b -> b.capacity)
-                .reduce(0, Integer::sum);
+        Map<String, List<Bogie>> groupedBogies = bogies.stream()
+                .collect(Collectors.groupingBy(b -> b.name));
 
-        System.out.println("\nTotal Seating Capacity in Train: " + totalSeats);
+        System.out.println("\nGrouped Bogies:");
+        for (Map.Entry<String, List<Bogie>> entry : groupedBogies.entrySet()) {
+            System.out.println("Bogie Type: " + entry.getKey());
+            entry.getValue().forEach(System.out::println);
+            System.out.println();
+        }
     }
 }
