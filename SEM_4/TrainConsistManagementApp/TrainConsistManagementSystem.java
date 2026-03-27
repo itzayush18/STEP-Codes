@@ -1,23 +1,47 @@
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class TrainConsistManagementSystem {
+
+    static class Bogie {
+        String name;
+        int capacity;
+
+        Bogie(String name, int capacity) {
+            this.name = name;
+            this.capacity = capacity;
+        }
+
+        public String toString() {
+            return "Bogie: " + name + ", Capacity: " + capacity;
+        }
+    }
+
     public static void main(String[] args) {
         System.out.println("==================================");
-        System.out.println(" UC6 - Map Bogie to Capacity (HashMap) ");
+        System.out.println(" UC9 - Group Bogies by Type ");
         System.out.println("==================================");
 
-        Map<String, Integer> capacityMap = new HashMap<>();
+        List<Bogie> bogies = new ArrayList<>();
+        bogies.add(new Bogie("Sleeper", 72));
+        bogies.add(new Bogie("AC Chair", 56));
+        bogies.add(new Bogie("First Class", 24));
+        bogies.add(new Bogie("Sleeper", 70));
+        bogies.add(new Bogie("AC Chair", 60));
 
-        capacityMap.put("PB101", 72);
-        capacityMap.put("PB102", 60);
-        capacityMap.put("GB201", 2000);
-        capacityMap.put("PB103", 40);
-        capacityMap.put("GB202", 1500);
+        System.out.println("All Bogies:");
+        bogies.forEach(System.out::println);
 
-        System.out.println("Bogie Capacity Mapping:");
-        for (Map.Entry<String, Integer> entry : capacityMap.entrySet()) {
-            System.out.println("Bogie ID: " + entry.getKey() + ", Capacity: " + entry.getValue());
+        Map<String, List<Bogie>> groupedBogies = bogies.stream()
+                .collect(Collectors.groupingBy(b -> b.name));
+
+        System.out.println("\nGrouped Bogies:");
+        for (Map.Entry<String, List<Bogie>> entry : groupedBogies.entrySet()) {
+            System.out.println("Bogie Type: " + entry.getKey());
+            entry.getValue().forEach(System.out::println);
+            System.out.println();
         }
     }
 }
