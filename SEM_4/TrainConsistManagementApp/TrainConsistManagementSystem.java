@@ -1,19 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
-
-class Wagon {
-    private String id;
-    private String type;
-
-    public Wagon(String id, String type) {
-        this.id = id;
-        this.type = type;
-    }
-
-    public String toString() {
-        return "Wagon ID: " + id + ", Type: " + type;
-    }
-}
+import java.util.HashSet;
 
 public class TrainConsistManagementSystem {
     public static void main(String[] args) {
@@ -21,18 +6,17 @@ public class TrainConsistManagementSystem {
         System.out.println("    Train Consist Management App   ");
         System.out.println("==================================");
 
-        List<Wagon> trainConsist = new ArrayList<>();
+        HashSet<String> bogieIds = new HashSet<>();
 
-        trainConsist.add(new Wagon("P001", "Passenger - Sleeper"));
-        trainConsist.add(new Wagon("P002", "Passenger - AC Chair"));
-        trainConsist.add(new Wagon("G001", "Goods - Rectangular"));
-        trainConsist.add(new Wagon("G002", "Goods - Cylindrical"));
+        bogieIds.add("PB101");
+        bogieIds.add("PB102");
+        bogieIds.add("PB103");
+        bogieIds.add("PB101");
+        bogieIds.add("PB104");
 
-        System.out.println("Train initialized successfully.\n");
-
-        System.out.println("Train Consist Summary:");
-        for (Wagon wagon : trainConsist) {
-            System.out.println(wagon);
+        System.out.println("Unique Bogie IDs:");
+        for (String id : bogieIds) {
+            System.out.println(id);
         }
     }
 }
