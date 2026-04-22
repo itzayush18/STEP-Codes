@@ -23,13 +23,35 @@ public class Length {
     }
 
     public Length(double value, LengthUnit unit) {
-        if (unit == null) throw new IllegalArgumentException("Unit cannot be null");
+        if (!Double.isFinite(value)) {
+            throw new IllegalArgumentException("Invalid value");
+        }
+        if (unit == null) {
+            throw new IllegalArgumentException("Unit cannot be null");
+        }
         this.value = value;
         this.unit = unit;
     }
 
     private double toBaseUnit() {
-        return this.value * this.unit.getConversionFactor();
+        return value * unit.getConversionFactor();
+    }
+
+    public static double convert(double value, LengthUnit from, LengthUnit to) {
+        if (!Double.isFinite(value)) {
+            throw new IllegalArgumentException("Invalid value");
+        }
+        if (from == null || to == null) {
+            throw new IllegalArgumentException("Unit cannot be null");
+        }
+
+        double base = value * from.getConversionFactor();
+        return base / to.getConversionFactor();
+    }
+
+    public Length convertTo(LengthUnit targetUnit) {
+        double converted = convert(this.value, this.unit, targetUnit);
+        return new Length(converted, targetUnit);
     }
 
     @Override
@@ -39,5 +61,10 @@ public class Length {
 
         Length other = (Length) obj;
         return Double.compare(this.toBaseUnit(), other.toBaseUnit()) == 0;
+    }
+
+    @Override
+    public String toString() {
+        return value + " " + unit;
     }
 }
