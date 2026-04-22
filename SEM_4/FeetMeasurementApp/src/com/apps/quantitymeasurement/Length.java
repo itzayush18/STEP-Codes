@@ -54,6 +54,7 @@ public class Length {
         return new Length(converted, targetUnit);
     }
 
+    // UC6: add → result in first operand unit
     public Length add(Length other) {
         if (other == null) {
             throw new IllegalArgumentException("Other length cannot be null");
@@ -63,6 +64,21 @@ public class Length {
         double result = sumBase / this.unit.getConversionFactor();
 
         return new Length(result, this.unit);
+    }
+
+    // ✅ UC7: add with target unit
+    public Length add(Length other, LengthUnit targetUnit) {
+        if (other == null) {
+            throw new IllegalArgumentException("Other length cannot be null");
+        }
+        if (targetUnit == null) {
+            throw new IllegalArgumentException("Target unit cannot be null");
+        }
+
+        double sumBase = this.toBaseUnit() + other.toBaseUnit();
+        double result = sumBase / targetUnit.getConversionFactor();
+
+        return new Length(result, targetUnit);
     }
 
     @Override
