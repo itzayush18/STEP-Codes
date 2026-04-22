@@ -40,4 +40,31 @@ public class QuantityMeasurementApp {
         System.out.println(new Length(36.0, LengthUnit.INCHES)
                 .equals(new Length(1.0, LengthUnit.YARDS)));
     }
+
+    public static boolean demonstrateWeightEquality(Weight w1, Weight w2) {
+        return w1.equals(w2);
+    }
+
+    public static Weight demonstrateWeightConversion(double value,
+                                                     WeightUnit from,
+                                                     WeightUnit to) {
+        double base = from.convertToBaseUnit(value);
+        double result = to.convertFromBaseUnit(base);
+        return new Weight(result, to);
+    }
+
+    public static Weight demonstrateWeightConversion(Weight weight,
+                                                     WeightUnit toUnit) {
+        return weight.convertTo(toUnit);
+    }
+
+    public static Weight demonstrateWeightAddition(Weight w1, Weight w2) {
+        return w1.add(w2);
+    }
+
+    public static Weight demonstrateWeightAddition(Weight w1,
+                                                   Weight w2,
+                                                   WeightUnit targetUnit) {
+        return w1.add(w2, targetUnit);
+    }
 }
