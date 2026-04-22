@@ -54,6 +54,17 @@ public class Length {
         return new Length(converted, targetUnit);
     }
 
+    public Length add(Length other) {
+        if (other == null) {
+            throw new IllegalArgumentException("Other length cannot be null");
+        }
+
+        double sumBase = this.toBaseUnit() + other.toBaseUnit();
+        double result = sumBase / this.unit.getConversionFactor();
+
+        return new Length(result, this.unit);
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
